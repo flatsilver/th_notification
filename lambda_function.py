@@ -18,4 +18,5 @@ def lambda_handler(event, context):
     return response
 
 if __name__ == '__main__':
+    # ローカル確認用
     os.environ["ARN"] = "snsで取得したarn"
