@@ -16,14 +16,15 @@ def lambda_handler(event, context):
     # POSTリクエストでmsgとsubを渡す予定
     try:
         body_dict = ast.literal_eval(event['body'])
+
+        if 'msg' in body_dict:
+            msg = body_dict['msg']
+
+        if 'sub' in body_dict:
+            sub = body_dict['sub']
+
     except KeyError:
         print("Please include body")
-    
-    if 'msg' in body_dict:
-        msg = body_dict['msg']
-
-    if 'sub' in body_dict:
-        sub = body_dict['sub']
 
     #とりあえずメールを送信することを想定
     response = client.publish(TopicArn = arn, Message = msg, Subject = sub)
