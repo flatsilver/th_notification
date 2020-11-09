@@ -26,11 +26,10 @@ def lambda_handler(event, context):
         sub = body_dict['sub']
 
     #とりあえずメールを送信することを想定
-    #response = client.publish(TopicArn = arn, Message = msg, Subject = sub)
-    #snsが設定されるまでの確認用
+    response = client.publish(TopicArn = arn, Message = msg, Subject = sub)
     print("sub:{},msg:{}".format(sub,msg))
     logger.info("th_notification end")
-    #return response
+    return response
 
 if __name__ == '__main__':
     # ローカル確認用
