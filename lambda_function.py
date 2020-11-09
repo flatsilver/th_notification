@@ -30,7 +30,13 @@ def lambda_handler(event, context):
     response = client.publish(TopicArn = arn, Message = msg, Subject = sub)
     print("sub:{},msg:{}".format(sub,msg))
     logger.info("th_notification end")
-    return response
+    return {
+        'isBase64Encoded': False,
+        'statusCode': 200,
+        'headers': {},
+        'body': '{"message": "ok"}'
+    }
+
 
 if __name__ == '__main__':
     # ローカル確認用
