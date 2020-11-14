@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>グループ３通知</title>
+</head>
+<body>
+    <H3>グループ３通知画面</H3>
+    <pre id="output"></pre>
+    <script>
+        var output = document.getElementById('output');
+        var socket = new WebSocket("wss://uiso9zequl.execute-api.ap-northeast-1.amazonaws.com/production");
+
+        socket.onopen = function() {
+           output.innerHTML += "接続できました！\n";
+        };
+
+        socket.onmessage = function(e) {
+          output.innerHTML += "受信：" + e.data + "\n";
+          let msg = new SpeechSynthesisUtterance();
+          msg.text = e.data;
+          msg.rate = 1;
+          msg.pitch = 0;
+          msg.lang = 'ja-JP';
+          sleep(2000);
+          speechSynthesis.speak(msg);
+        };
+
+        function sleep(time){
+          var date_1 = new Date().getTime();
+          var date_2 = new Date().getTime();
+          while (date_2 < date_1 + time){
+            date_2 = new Date().getTime();
+          }
+          return;
+        }
+    </script>
+
+</body>
+</html>
