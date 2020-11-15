@@ -1,7 +1,8 @@
 import boto3
 import logging
 import os
-import ast
+import json
+import urllib.parse
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -18,19 +19,13 @@ def lambda_handler(event, context):
     msg = "zoomから取得出来たメッセージとか"
     sub = "生徒からのメッセージ"
 
-    # POSTリクエストでmsgとsubを渡す予定
-    try:
-        body_dict = ast.literal_eval(event['body'])
+    # SlackからのPOSTリクエストをparseして、messageを取り出す
+    # SlackからのJSONは以下を参照
+    # https://api.slack.com/reference/interaction-payloads/shortcuts
+    data = urllib.parse.unquote(event['body']).replace("payload=", "")
+    body = json.loads(data)
+    msg = body['message']['text']
 
-        if 'msg' in body_dict:
-            msg = body_dict['msg']
-
-        if 'sub' in body_dict:
-            sub = body_dict['sub']
-        
-    except KeyError:
-        print("Please include body")
-        
     items = connections.scan(ProjectionExpression='id').get('Items')
 
     if not items is None:
